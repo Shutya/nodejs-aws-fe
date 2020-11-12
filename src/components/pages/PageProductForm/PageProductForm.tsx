@@ -102,6 +102,7 @@ const emptyValues: any = ProductSchema.cast();
 
 export default function PageProductForm() {
   const history = useHistory();
+  // @ts-ignore
   const {id} = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -109,7 +110,7 @@ export default function PageProductForm() {
   const onSubmit = (values: FormikValues) => {
     const formattedValues = ProductSchema.cast(values);
     const productToSave = id ? {...ProductSchema.cast(formattedValues), id} : formattedValues;
-    axios.put(`${API_PATHS.bff}/product`, productToSave)
+    axios.post(`${API_PATHS.product}`, productToSave)
       .then(() => history.push('/admin/products'));
   };
 
@@ -118,7 +119,7 @@ export default function PageProductForm() {
       setIsLoading(false);
       return;
     }
-    axios.get(`${API_PATHS.bff}/product/${id}`)
+    axios.get(`${API_PATHS.product}/${id}`)
       .then(res => {
         setProduct(res.data);
         setIsLoading(false);
